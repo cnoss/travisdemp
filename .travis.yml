@@ -9,19 +9,14 @@ install:
   - rm -rf public || exit 0
 
 script:
-- openssl aes-256-cbc -K $encrypted_1d262b48bc9b_key -iv $encrypted_1d262b48bc9b_iv -in gh-deploy-key.enc -out deploy-key -d
-- chmod 600 deploy-key
-- eval `ssh-agent -s`
-- ssh-add deploy-key
-- git config user.name "Automatic Publish"
-- git config user.email "christian.noss@th-koeln.de"
-- git remote add gh-token "${GH_REF}";
-- git fetch gh-token && git fetch gh-token gh-pages:gh-pages;
-- if [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then echo "Pushing to github"; PYTHONPATH=src/ mkdocs gh-deploy -v --clean --remote-name gh-token; git push gh-token gh-pages; fi;
+  - pygmentize -V
+  - git submodule update --init --recursive
+  - hugo -v
 
 deploy:
   provider: pages
   skip-cleanup: true
+  github-token: $gh-token
   keep-history: true
   on:
     branch: master
