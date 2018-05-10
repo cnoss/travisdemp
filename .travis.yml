@@ -1,10 +1,5 @@
 # Ruby is our language as asciidoctor is a ruby gem.
 lang: ruby
-before_install:
-  - sudo apt-get install pandoc
-  - gem install asciidoctor
-script:
-  - make
 after_success:
   - .travis/push.sh
 env:
