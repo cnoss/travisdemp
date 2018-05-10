@@ -1,22 +1,12 @@
-sudo: required
-python:
-  - "2.7"
-
-install:
-  - sudo pip install pygments
-  - wget -O /tmp/hugo.deb https://github.com/gohugoio/hugo/releases/download/v0.24.1/hugo_0.24.1_Linux-64bit.deb
-  - sudo dpkg -i /tmp/hugo.deb
-  - rm -rf public || exit 0
-
+# Ruby is our language as asciidoctor is a ruby gem.
+lang: ruby
+before_install:
+  - sudo apt-get install pandoc
+  - gem install asciidoctor
 script:
-  - pygmentize -V
-  - git submodule update --init --recursive
- # - hugo -v
-
-deploy:
-  provider: pages
-  skip-cleanup: true
-  github-token: $gh-token
-  keep-history: true
-  on:
-    branch: master
+  - make
+after_success:
+  - .travis/push.sh
+env:
+  global:
+  - secure: IYe/qYNkwkQtITXoFu59HFPzE1sCEfhZbsKHS4jYVaCItLqAJoIHp7hZK2dDHAZaXI0zVWJrkkUlAQF+7RHWH97zZNijaa/r7DB7Blr7r4ixBQeqdPQS1lfC1L5TX5OcnhbYHp6T15nnnPXBeVkA2hVleQuaWgtQjYVOR+ujY1KpjEYub1buc6tmQMD2kuOb+63e9pLKG0jotbaKq4MHFnbFL0QVZ9lyAjOy6cGodsiYMJ+R3IFxgJBru0i8C19a6kYBk17JHRzIKK64fVjNIXvDGvbC68OKQVojE9Z7miB75FpL2R77K3Xnk1WDI+7VoY1z9X0WrQmwvvQpC3BbF11lP5TEm5v94zLJ7rLZm1C9Az9d34qBX0C9fXp7tad3JuEszXtP8NcWFimk0O51KfQVHzq4QthLxyJe+rmMRql0e9oVQRVENDqctALzmLl+IvDy7UV9Iu5NjuemIOHV3CAWMriSgAMRx1udH/kB/u13HaMWeTZz4Gc8tbq7bqyJbihPvYna1PUlhMGhtEKw/bnqrIL1r5UapkqWK+VpuNZu+r7VuP6EOCmnvzV5DX35sw0lno8mPmBYC2ewYyYWE067EIB+i5AIPjsnzLcbbJRJTuD1Wk9hzB3YJZ+MRIAkCIbcyxAIT8zWNYXDJ1kYnd1nxLt/SK6jrRvPaWisqYw=
