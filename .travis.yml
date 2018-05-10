@@ -1,5 +1,16 @@
-# Ruby is our language as asciidoctor is a ruby gem.
-lang: ruby
+sudo: required
+python:
+  - "2.7"
+
+install:
+  - sudo pip install pygments
+  - wget -O /tmp/hugo.deb https://github.com/gohugoio/hugo/releases/download/v0.24.1/hugo_0.24.1_Linux-64bit.deb
+  - sudo dpkg -i /tmp/hugo.deb
+  - rm -rf public || exit 0
+
+script:
+  - pygmentize -V
+  - git submodule update --init --recursive
 after_success:
   - .travis/push.sh
 env:
